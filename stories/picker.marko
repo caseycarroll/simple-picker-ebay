@@ -56,7 +56,7 @@ class {
             this.state.selectedAspects.delete(valueKey);
             this.state.selectedAspects = new Map(this.state.selectedAspects);
         });
-        
+
         this.emit("change", this.state.selectedAspects);
     }
 
@@ -97,8 +97,14 @@ class {
     priority="primary"
     on-click("handleSave")
     disabled=!state.hasNewSelection
+    bodyState=input?.save.isLoading ? "loading": "none"
 >
-    ${input.save.renderBody}
+    <if(input.save)>
+        <${input.save.renderBody} />
+    </if>
+    <else>
+        Save
+    </else>
 </ebay-button>
 
 <hr>

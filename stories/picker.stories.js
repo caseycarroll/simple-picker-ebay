@@ -9,9 +9,6 @@ export default {
 export const Picker = {
     args: {
         onChange: fn(),
-        save: {
-            renderBody: "Test"
-        },
         selectedAspects: [
             {
                 title: "9",
