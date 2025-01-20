@@ -3,7 +3,6 @@ class {
         this.state = {
             selectedCategoryIndex: 0,
             selectedAspects: new Map(),
-            hasNewSelection: false,
         };
     }
 
@@ -25,8 +24,6 @@ class {
     }
 
     selectAspect({ pressed }) {
-        this.state.hasNewSelection = true;
-        
         const selectedCategory =
             this.input.aspects.categories[this.state.selectedCategoryIndex];
         selectedCategory.values.forEach((value, index) => {
@@ -47,8 +44,6 @@ class {
     }
 
     resetGroup() {
-        this.state.hasNewSelection = true;
-        
         const selectedCategory =
             this.input.aspects.categories[this.state.selectedCategoryIndex];
         selectedCategory.values.forEach((value, index) => {
@@ -91,20 +86,6 @@ class {
 
 <ebay-button priority="tertiary" on-click("resetGroup")>
     Reset
-</ebay-button>
-
-<ebay-button
-    priority="primary"
-    on-click("handleSave")
-    disabled=!state.hasNewSelection
-    bodyState=input?.save.isLoading ? "loading": "none"
->
-    <if(input.save)>
-        <${input.save.renderBody} />
-    </if>
-    <else>
-        Save
-    </else>
 </ebay-button>
 
 <hr>
