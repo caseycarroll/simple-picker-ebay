@@ -1,17 +1,16 @@
-import component from './picker.marko'
+import pickerDialog from './picker-dialog.marko'
 import { fn } from '@storybook/test';
 
 export default {
-    title: "Picker",
-    component
+    title: "Picker Dialog",
+    component: pickerDialog
 }
 
-export const Picker = {
+
+export const Test = {
     args: {
         onChange: fn(),
-        save: {
-            renderBody: "Test"
-        },
+        onSave: fn(),
         selectedAspects: [
             {
                 title: "9",

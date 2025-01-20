@@ -1,0 +1,65 @@
+import picker from './picker.marko'
+
+class {
+    onCreate() {
+        this.state = {
+            isOpen: false,
+            nextSelection: new Map(),
+            hasNewSelection: false,
+        };
+    }
+
+    onInput(input) {
+        this.state.nextSelection = input.selectedAspects
+    }
+
+    openDialog() {
+        this.state.isOpen = true;
+    }
+
+    closeDialog(e) {
+        this.state.isOpen = false;
+    }
+
+    handleChange(nextSelection) {
+        this.emit("change", Object.fromEntries(nextSelection))
+        this.state.nextSelection = new Map(nextSelection)
+        this.state.hasNewSelection = true
+    }
+
+    handleSave() {
+        this.state.isOpen = false;
+        this.emit("save", Object.fromEntries(this.state.nextSelection))
+        this.state.hasNewSelection = false
+    }
+}
+
+<ebay-lightbox-dialog open=state.isOpen on-close("closeDialog")>
+
+    <@header>Shoes</@header>
+
+    <@footer>
+        <ebay-button
+            priority="primary"
+            on-click("handleSave")
+            disabled=!state.hasNewSelection
+        >
+            Save
+        </ebay-button>
+    </@footer>
+    
+    <!-- <await(fetchOptions) client-reorder>
+            <@placeholder>
+                Loading...
+            </@placeholder>
+            <@then|data|>
+                <picker on-change("handleChange") aspects=input.aspects selectedAspects=state.nextSelection />
+            </@then>
+        </await> -->
+
+    <picker on-change("handleChange") aspects=input.aspects selectedAspects=state.nextSelection />
+</ebay-lightbox-dialog>
+
+<ebay-button on-click("openDialog")>
+    Open Dialog
+</ebay-button>
