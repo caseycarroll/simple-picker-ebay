@@ -1,0 +1,30 @@
+{
+  "name": "simple-picker",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@chromatic-com/storybook": "^3.2.4",
+    "@storybook/addon-essentials": "^8.5.0",
+    "@storybook/blocks": "^8.5.0",
+    "@storybook/marko": "^9.0.2",
+    "@storybook/marko-vite": "^2.0.3",
+    "@storybook/test": "^8.5.0",
+    "@storybook/web-components": "^8.5.0",
+    "@storybook/web-components-vite": "^8.5.0",
+    "lit": "^3.2.1",
+    "storybook": "^8.5.0"
+  },
+  "dependencies": {
+    "@ebay/ebayui-core": "^14.6.8",
+    "@ebay/skin": "^18.6.0",
+    "marko": "^5.37.11"
+  }
+}

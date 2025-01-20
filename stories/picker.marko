@@ -1,0 +1,79 @@
+class {
+    onCreate() {
+        this.state = {
+            selectedCategoryIndex: 0,
+            selectedAspects: new Map(),
+        };
+    }
+
+    onInput(input) {
+        input.selectedAspects.forEach((selectedAspect) => {
+            this.state.selectedAspects = new Map(this.state.selectedAspects.set(`${selectedAspect.categoryID}-${selectedAspect.title}`, selectedAspect));
+        })
+    }
+
+    selectCategory({ index }) {
+        this.state.selectedCategoryIndex = index;
+    }
+
+    selectAspect({ pressed }) {
+        const selectedCategory =
+            this.input.aspects.categories[this.state.selectedCategoryIndex];
+        selectedCategory.values.forEach((value, index) => {
+            const valueKey = `${selectedCategory.id}-${value.title}`;
+            if (pressed.includes(index)) {
+                this.state.selectedAspects = new Map(
+                    this.state.selectedAspects.set(valueKey, value),
+                );
+            } else {
+                this.state.selectedAspects.delete(valueKey);
+                this.state.selectedAspects = new Map(
+                    this.state.selectedAspects,
+                );
+            }
+        });
+
+        this.emit("change", Object.fromEntries(this.state.selectedAspects));
+    }
+
+    resetGroup() {
+        const selectedCategory =
+            this.input.aspects.categories[this.state.selectedCategoryIndex];
+        selectedCategory.values.forEach((value, index) => {
+            const valueKey = `${selectedCategory.id}-${value.title}`;
+            this.state.selectedAspects.delete(valueKey);
+            this.state.selectedAspects = new Map(this.state.selectedAspects);
+        });
+        this.emit("change", Object.fromEntries(this.state.selectedAspects));
+    }
+}
+
+<ebay-segmented-buttons on-change("selectCategory")>
+    <for|category, categoryIndex| of=(input.aspects.categories)>
+        <@button selected=categoryIndex === state.selectedCategoryIndex>
+            ${category.title}
+        </@button>
+    </for>
+</ebay-segmented-buttons>
+
+<ebay-toggle-button-group on-change("selectAspect")>
+    <for|value| of=(
+        input.aspects.categories[state.selectedCategoryIndex].values
+    )>
+        <@button
+            key=value.title
+            pressed=state.selectedAspects.has(
+                `${input.aspects.categories[state.selectedCategoryIndex].id}-${value.title}`,
+            )
+        >
+            ${value.title}
+        </@button>
+    </for>
+</ebay-toggle-button-group>
+
+<ebay-button priority="tertiary" on-click("resetGroup")>
+    Reset
+</ebay-button>
+$ const selectedObj = Object.fromEntries(state.selectedAspects);
+$ const selectedJson = JSON.stringify(selectedObj);
+<p>selectedAspects: ${selectedJson}</p>
