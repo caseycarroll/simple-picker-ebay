@@ -23,11 +23,15 @@ class {
         this.state.selectedCategoryIndex = index;
     }
 
+    // toggle group on change event contains list of indicies of pressed items
     selectAspect({ pressed }) {
         const selectedCategory =
             this.input.aspects.categories[this.state.selectedCategoryIndex];
+        
         selectedCategory.values.forEach((value, index) => {
+            
             const valueKey = `${selectedCategory.id}-${value.title}`;
+            
             if (pressed.includes(index)) {
                 this.state.selectedAspects = new Map(
                     this.state.selectedAspects.set(valueKey, value),
@@ -46,7 +50,8 @@ class {
     resetGroup() {
         const selectedCategory =
             this.input.aspects.categories[this.state.selectedCategoryIndex];
-        selectedCategory.values.forEach((value, index) => {
+        
+        selectedCategory.values.forEach((value) => {
             const valueKey = `${selectedCategory.id}-${value.title}`;
             this.state.selectedAspects.delete(valueKey);
             this.state.selectedAspects = new Map(this.state.selectedAspects);
@@ -56,7 +61,6 @@ class {
     }
 
     handleSave() {
-        this.state.hasNewSelection = false;
         this.emit("save", this.state.selectedAspects);
     }
 }
