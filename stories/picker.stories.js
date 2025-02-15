@@ -12,7 +12,7 @@ export const Picker = {
         selectedAspects: [
             {
                 title: "9",
-                categoryID: "men",
+                id: "mens-9",
             }
         ],
         aspects: {
@@ -23,19 +23,19 @@ export const Picker = {
                     values: [
                         {
                             title: "9",
-                            categoryID: "men"
+                            id: "mens-9"
                         },
                         {
                             title: "10",
-                            categoryID: "men"
+                            id: "mens-10"
                         },
                         {
                             title: "11",
-                            categoryID: "men"
+                            id: "mens-11"
                         },
                         {
                             title: "12",
-                            categoryID: "men"
+                            id: "mens-12"
                         },
                     ]
                 },
@@ -45,15 +45,15 @@ export const Picker = {
                     values: [
                         {
                             title: "8",
-                            categoryID: "women"
+                            id: "womens-8"
                         },
                         {
                             title: "9",
-                            categoryID: "women"
+                            id: "womens-9"
                         },
                         {
                             title: "10",
-                            categoryID: "women"
+                            id: "womens-10"
                         }
                     ]
                 }

@@ -11,7 +11,7 @@ class {
             input.selectedAspects.forEach((selectedAspect) => {
                 this.state.selectedAspects = new Map(
                     this.state.selectedAspects.set(
-                        `${selectedAspect.categoryID}-${selectedAspect.title}`,
+                        selectedAspect.id,
                         selectedAspect,
                     ),
                 );
@@ -29,15 +29,12 @@ class {
             this.input.aspects.categories[this.state.selectedCategoryIndex];
         
         selectedCategory.values.forEach((value, index) => {
-            
-            const valueKey = `${selectedCategory.id}-${value.title}`;
-            
             if (pressed.includes(index)) {
                 this.state.selectedAspects = new Map(
-                    this.state.selectedAspects.set(valueKey, value),
+                    this.state.selectedAspects.set(value.id, value),
                 );
             } else {
-                this.state.selectedAspects.delete(valueKey);
+                this.state.selectedAspects.delete(value.id);
                 this.state.selectedAspects = new Map(
                     this.state.selectedAspects,
                 );
@@ -52,8 +49,7 @@ class {
             this.input.aspects.categories[this.state.selectedCategoryIndex];
         
         selectedCategory.values.forEach((value) => {
-            const valueKey = `${selectedCategory.id}-${value.title}`;
-            this.state.selectedAspects.delete(valueKey);
+            this.state.selectedAspects.delete(value.id);
             this.state.selectedAspects = new Map(this.state.selectedAspects);
         });
 
@@ -77,7 +73,7 @@ class {
             <@button
                 key=value.title
                 pressed=state.selectedAspects.has(
-                    `${input.aspects.categories[state.selectedCategoryIndex].id}-${value.title}`,
+                    value.id,
                 )
             >
                 ${value.title}
@@ -111,6 +107,14 @@ $ const selectedJson = JSON.stringify(selectedObj);
             </th>
             <td>
                 ${selectedJson}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                selectedCategoryIndex:
+            </th>
+            <td>
+                ${state.selectedCategoryIndex}
             </td>
         </tr>
     </tbody>
