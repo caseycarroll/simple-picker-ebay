@@ -36,6 +36,63 @@ export const SingleGrid = {
     }
 }
 
+export const Groups = {
+    args: {
+        aspects: {
+            categories: [
+                {
+                    id: "men",
+                    title: "Men",
+                    groupings: [
+                        {
+                            title: "Standard",
+                            values: [
+                                {
+                                    title: "9",
+                                    id: "mens-standard-9"
+                                },
+                                {
+                                    title: "10",
+                                    id: "mens-standard-10"
+                                },
+                                {
+                                    title: "11",
+                                    id: "mens-standard-11"
+                                },
+                                {
+                                    title: "12",
+                                    id: "mens-standard-12"
+                                },
+                            ]
+                        },
+                        {
+                            title: "Wide",
+                            values: [
+                                {
+                                    title: "9",
+                                    id: "mens-wide-9"
+                                },
+                                {
+                                    title: "10",
+                                    id: "mens-wide-10"
+                                },
+                                {
+                                    title: "11",
+                                    id: "mens-wide-11"
+                                },
+                                {
+                                    title: "12",
+                                    id: "mens-wide-12"
+                                },
+                            ]
+                        },
+                    ]
+                },
+            ]
+        }
+    }
+}
+
 export const Tabs = {
     args: {
         aspects: {

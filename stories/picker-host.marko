@@ -6,14 +6,31 @@ $ const { categories } = aspects
         <if(categories.length > 1)>
             <@tab>${category.title}</@tab>
         </if>
-        <@panel>
-            <@grid>
-                <for|value, index| of=category.values>
-                    <@cell selectionId=value.id>
-                        ${value.title}
-                    </@cell>
+        <if(!category.groupings)>
+            <@panel>
+                <@grid>
+                    <for|value, index| of=category.values>
+                        <@cell selectionId=value.id>
+                            ${value.title}
+                        </@cell>
+                    </for>
+                </@grid>
+            </@panel>
+        </if>
+        <if(category.groupings)>
+            <@panel>
+                <for|grouping| of=category.groupings>
+                    <@grouping title=grouping.title>
+                        <@grid>
+                            <for|value, index| of=grouping.values>
+                                <@cell selectionId=value.id>
+                                    ${value.title}
+                                </@cell>
+                            </for>
+                        </@grid>
+                    </@grouping>
                 </for>
-            </@grid>
-        </@panel>
+            </@panel>
+        </if>
     </for>
 </declarative-picker>

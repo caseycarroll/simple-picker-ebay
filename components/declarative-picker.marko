@@ -89,7 +89,7 @@ style {
         <if(selectedPanel.grouping)>
             <for|grouping| of=(selectedPanel.grouping)>
                 <ebay-accordion>
-                    <@details>
+                    <@details open>
                         <@summary>${grouping.title}</@summary>
                         <grid cells=grouping.grid.cell />
                     </@details>
@@ -126,7 +126,7 @@ style {
 
         <if(selectedRow.grouping)>
             <ebay-accordion>
-                <@details>
+                <@details open>
                     <@summary>${selectedRow.grouping.title}</@summary>
                     <grid cells=selectedRow.grouping.grid.cell />
                 </@details>
