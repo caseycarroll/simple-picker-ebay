@@ -50,6 +50,20 @@ style {
     }
 }
 
+<macro|{cells}| name="grid">
+    <for|cell| of=(cells)>
+        <ebay-toggle-button
+            on-toggle("toggleItem", cell)
+            pressed=Object.hasOwn(
+                state.selectedItems,
+                cell.selectionId,
+            )
+        >
+            <${cell.renderBody}/>
+        </ebay-toggle-button>
+    </for>
+</macro>
+
 <div class="wrapper flow">
     <if(!state.showRowContent)>
         <if(input.tab)>
@@ -65,34 +79,14 @@ style {
         <for|panel, index| of=input.panel>
 
             <if(panel.grid && index === state.selectedTabIndex)>
-                <for|cell| of=(panel.grid.cell)>
-                    <ebay-toggle-button
-                        on-toggle("toggleItem", cell)
-                        pressed=Object.hasOwn(
-                            state.selectedItems,
-                            cell.selectionId,
-                        )
-                    >
-                        <${cell.renderBody}/>
-                    </ebay-toggle-button>
-                </for>
+                <grid cells=panel.grid.cell />
             </if>
 
             <if(panel.grouping && index === state.selectedTabIndex)>
                 <ebay-accordion>
                     <@details>
                         <@summary>${panel.grouping.title}</@summary>
-                        <for|cell| of=(panel.grouping.grid.cell)>
-                            <ebay-toggle-button
-                                on-toggle("toggleItem", cell)
-                                pressed=Object.hasOwn(
-                                    state.selectedItems,
-                                    cell.selectionId,
-                                )
-                            >
-                                <${cell.renderBody}/>
-                            </ebay-toggle-button>
-                        </for>
+                        <grid cells=panel.grouping.grid.cell />
                     </@details>
                 </ebay-accordion>
             </if>
@@ -121,31 +115,14 @@ style {
         </div>
 
         <if(selectedRow.grid)>
-            <for|cell| of=(selectedRow.grid.cell)>
-                <ebay-toggle-button
-                    on-toggle("toggleItem", cell)
-                    pressed=Object.hasOwn(state.selectedItems, cell.selectionId)
-                >
-                    <${cell.renderBody}/>
-                </ebay-toggle-button>
-            </for>
+            <grid cells=selectedRow.grid.cell />
         </if>
 
         <if(selectedRow.grouping)>
             <ebay-accordion>
                 <@details>
                     <@summary>${selectedRow.grouping.title}</@summary>
-                    <for|cell| of=(selectedRow.grouping.grid.cell)>
-                        <ebay-toggle-button
-                            on-toggle("toggleItem", cell)
-                            pressed=Object.hasOwn(
-                                state.selectedItems,
-                                cell.selectionId,
-                            )
-                        >
-                            <${cell.renderBody}/>
-                        </ebay-toggle-button>
-                    </for>
+                    <grid cells=selectedRow.grouping.grid.cell />
                 </@details>
             </ebay-accordion>
         </if>
