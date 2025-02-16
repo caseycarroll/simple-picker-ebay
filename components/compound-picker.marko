@@ -106,7 +106,8 @@ style {
         </if>
     </if>
     <else>
-        $ const selectedPanel = input.panel[state.selectedTabIndex];
+        $ const panel = [...input.panel];
+        $ const selectedPanel = panel[state.selectedTabIndex];
         $ const selectedRow = selectedPanel.row[state.selectedRowIndex];
 
         <div class="cluster">
