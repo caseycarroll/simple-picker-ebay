@@ -3,7 +3,7 @@ class {
         this.state = {
             selectedTabIndex: 0,
             selectedItems: {},
-            navigationLevelIndex: 0,
+            showRowContent: false,
             selectedRowIndex: 0
         }
     }
@@ -23,12 +23,12 @@ class {
     }
 
     selectRow(rowIndex) {
-        this.state.navigationLevelIndex++;
+        this.state.showRowContent = true;
         this.state.selectedRowIndex = rowIndex;
     }
 
     navigateBack() {
-        this.state.navigationLevelIndex--;
+        this.state.showRowContent = false;
     }
 }
 
@@ -51,7 +51,7 @@ style {
 }
 
 <div class="wrapper flow">
-<if(state.navigationLevelIndex === 0)>
+<if(!state.showRowContent)>
     <if(input.tab)>
         <ebay-segmented-buttons on-change("selectTab")>
             <for|tab, index| of=input.tab>
