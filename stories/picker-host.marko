@@ -1,7 +1,7 @@
 $ const { aspects } = input
 $ const { categories } = aspects
 
-<declaritive-picker>
+<declarative-picker>
     <for|category, index| of=categories>
         <if(categories.length > 1)>
             <@tab>${category.title}</@tab>
@@ -16,4 +16,4 @@ $ const { categories } = aspects
             </@grid>
         </@panel>
     </for>
-</declaritive-picker>
+</declarative-picker>
