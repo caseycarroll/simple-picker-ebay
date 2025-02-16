@@ -1,0 +1,22 @@
+
+<if(input.tab)>
+    <ebay-segmented-buttons>
+        <for|tab| of=input.tab>
+            <@button>
+                <${tab.renderBody} />
+            </@button>
+        </for>
+    </ebay-segmented-buttons>
+</if>
+
+<for|panel| of=input.panel>
+    <if(panel.grid)>
+        <ebay-toggle-button-group>
+            <for|cell| of=panel.grid.cell>
+                <@button>
+                    <${cell.renderBody} />
+                </@button>
+            </for>
+        </ebay-toggle-button-group>
+    </if>
+</for>
