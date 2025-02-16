@@ -32,6 +32,22 @@ class {
 </if>
 
 <for|panel, index| of=input.panel>
+    
+    <if(panel.grouping)>
+        <ebay-accordion>
+            <@details>
+                <@summary>${panel.grouping.title}</@summary>
+                <for|cell| of=panel.grouping.grid.cell>
+                    <ebay-toggle-button 
+                        on-toggle("toggleItem", cell)
+                        pressed=Object.hasOwn(state.selectedItems, cell.selectionId)>
+                        <${cell.renderBody} />
+                    </ebay-toggle-button>
+                </for>
+            </@details>
+        </ebay-accordion>
+    </if>
+
     <if(panel.grid && index === state.selectedTabIndex)>
         <for|cell| of=panel.grid.cell>
             <ebay-toggle-button 
