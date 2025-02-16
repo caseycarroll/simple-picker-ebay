@@ -5,6 +5,8 @@ class {
             selectedItems: {},
             showRowContent: false,
             selectedRowIndex: 0,
+            optionsInView: [],
+            isResetEnabled: false,
         };
     }
 
@@ -29,6 +31,18 @@ class {
 
     navigateBack() {
         this.state.showRowContent = false;
+    }
+
+    handleReset(){
+        const clone = { ...this.state.selectedItems };
+        
+        this.state.optionsInView.forEach(visibleOption => {
+            if(Object.hasOwn(this.state.selectedItems, visibleOption)) {
+                delete clone[visibleOption];
+            }
+        });
+
+        this.state.selectedItems = clone;
     }
 }
 
@@ -83,11 +97,22 @@ style {
         $ const selectedPanel = panel[state.selectedTabIndex];
 
         <if(selectedPanel.grid)>
+            $ const iterableCells = [...selectedPanel.grid.cell]
+            $ state.optionsInView = iterableCells.map(({selectionId}) => selectionId);
+            $ state.isResetDisabled = Object.keys(state.selectedItems).some(selectedKey => state.optionsInView.includes(selectedKey))
             <grid cells=selectedPanel.grid.cell />
         </if>
 
         <if(selectedPanel.grouping)>
+            
+            $ let nextVisibleOptions = [];
+            
             <for|grouping| of=(selectedPanel.grouping)>
+                
+                $ const iterableCells = [...grouping.grid.cell]
+                $ let visibleGroup = iterableCells.map(({selectionId}) => selectionId);
+                $ nextVisibleOptions = [...nextVisibleOptions, ...visibleGroup]
+                
                 <ebay-accordion>
                     <@details open>
                         <@summary>${grouping.title}</@summary>
@@ -95,6 +120,9 @@ style {
                     </@details>
                 </ebay-accordion>
             </for>
+        
+            $ state.optionsInView = nextVisibleOptions;
+            $ state.isResetDisabled = Object.keys(state.selectedItems).some(selectedKey => state.optionsInView.includes(selectedKey))
         </if>
 
         <if(selectedPanel.rowButton)>
@@ -121,18 +149,38 @@ style {
         </div>
 
         <if(selectedRow.grid)>
+            $ const iterableCells = [...selectedRow.grid.cell]
+            $ state.optionsInView = iterableCells.map(({selectionId}) => selectionId);
+            $ state.isResetDisabled = Object.keys(state.selectedItems).some(selectedKey => state.optionsInView.includes(selectedKey))
             <grid cells=selectedRow.grid.cell />
         </if>
 
         <if(selectedRow.grouping)>
-            <ebay-accordion>
-                <@details open>
-                    <@summary>${selectedRow.grouping.title}</@summary>
-                    <grid cells=selectedRow.grouping.grid.cell />
-                </@details>
-            </ebay-accordion>
+            
+            $ let nextVisibleOptions = [];
+            
+            <for|grouping| of=(selectedRow.grouping)>
+                
+                $ const iterableCells = [...grouping.grid.cell]
+                $ let visibleGroup = iterableCells.map(({selectionId}) => selectionId);
+                $ nextVisibleOptions = [...nextVisibleOptions, ...visibleGroup]
+                
+                <ebay-accordion>
+                    <@details open>
+                        <@summary>${grouping.title}</@summary>
+                        <grid cells=grouping.grid.cell />
+                    </@details>
+                </ebay-accordion>
+            </for>
+        
+            $ state.optionsInView = nextVisibleOptions;
+            $ state.isResetDisabled = Object.keys(state.selectedItems).some(selectedKey => state.optionsInView.includes(selectedKey))
         </if>
     </else>
+
+    <ebay-button priority="tertiary" disabled=!state.isResetDisabled on-click("handleReset")>
+        Reset
+    </ebay-button>
 </div>
 $ const selectedJson = JSON.stringify(state.selectedItems);
 <h3>State Debug</h3>
@@ -149,6 +197,14 @@ $ const selectedJson = JSON.stringify(state.selectedItems);
         <tr>
             <th>selectedCategoryIndex:</th>
             <td>${state.selectedTabIndex}</td>
+        </tr>
+        <tr>
+            <th>optionsInView:</th>
+            <td>${state.optionsInView}</td>
+        </tr>
+        <tr>
+            <th>isResetDisabled:</th>
+            <td>${state.isResetDisabled}</td>
         </tr>
     </tbody>
 </table>
