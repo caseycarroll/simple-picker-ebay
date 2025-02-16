@@ -82,6 +82,9 @@ style {
 </macro>
 
 <div class="wrapper flow">
+    $ const panel = [...input.panel];
+    $ const selectedPanel = panel[state.selectedTabIndex];
+    
     <if(!state.showRowContent)>
         <if(input.tab)>
             <ebay-segmented-buttons on-change("selectTab")>
@@ -93,19 +96,12 @@ style {
             </ebay-segmented-buttons>
         </if>
 
-        $ const panel = [...input.panel];
-        $ const selectedPanel = panel[state.selectedTabIndex];
-
         // TODO: Abstract grid with reset
         <if(selectedPanel.grid)>
             $ const iterableCells = [...selectedPanel.grid.cell]
             $ state.optionsInView = iterableCells.map(({selectionId}) => selectionId);
             $ state.isResetEnabled = Object.keys(state.selectedItems).some(selectedKey => state.optionsInView.includes(selectedKey))
             <grid cells=selectedPanel.grid.cell />
-            
-            <ebay-button priority="tertiary" disabled=!state.isResetEnabled on-click("handleReset")>
-                Reset
-            </ebay-button>
         </if>
 
         // TODO: Abstract grouping with reset
@@ -130,10 +126,6 @@ style {
         
             $ state.optionsInView = nextVisibleOptions;
             $ state.isResetEnabled = Object.keys(state.selectedItems).some(selectedKey => state.optionsInView.includes(selectedKey))
-            
-            <ebay-button priority="tertiary" disabled=!state.isResetEnabled on-click("handleReset")>
-                Reset
-            </ebay-button>
         </if>
 
         <if(selectedPanel.rowButton)>
@@ -147,8 +139,6 @@ style {
         </if>
     </if>
     <else>
-        $ const panel = [...input.panel];
-        $ const selectedPanel = panel[state.selectedTabIndex];
         $ const selectedRow = selectedPanel.row[state.selectedRowIndex];
 
         <div class="cluster">
@@ -165,10 +155,6 @@ style {
             $ state.optionsInView = iterableCells.map(({selectionId}) => selectionId);
             $ state.isResetEnabled = Object.keys(state.selectedItems).some(selectedKey => state.optionsInView.includes(selectedKey))
             <grid cells=selectedRow.grid.cell />
-            
-            <ebay-button priority="tertiary" disabled=!state.isResetEnabled on-click("handleReset")>
-                Reset
-            </ebay-button>
         </if>
 
         // TODO: Abstract grouping with reset
@@ -193,12 +179,14 @@ style {
         
             $ state.optionsInView = nextVisibleOptions;
             $ state.isResetEnabled = Object.keys(state.selectedItems).some(selectedKey => state.optionsInView.includes(selectedKey))
-
-            <ebay-button priority="tertiary" disabled=!state.isResetEnabled on-click("handleReset")>
-                Reset
-            </ebay-button>
         </if>
     </else>
+
+    <if((!state.showRowContent && !selectedPanel.rowButton) || state.showRowContent)>
+        <ebay-button priority="tertiary" disabled=!state.isResetEnabled on-click("handleReset")>
+            Reset
+        </ebay-button>
+    </if>
 </div>
 $ const selectedJson = JSON.stringify(state.selectedItems);
 <h3>State Debug</h3>
