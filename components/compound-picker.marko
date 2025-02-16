@@ -51,7 +51,8 @@ style {
 }
 
 <macro|{cells}| name="grid">
-    <for|cell| of=(cells)>
+    $ const iterableCells = [...cells]
+    <for|cell| of=(iterableCells)>
         <ebay-toggle-button
             on-toggle("toggleItem", cell)
             pressed=Object.hasOwn(
@@ -76,31 +77,33 @@ style {
             </ebay-segmented-buttons>
         </if>
 
-        <for|panel, index| of=input.panel>
+        $ const panel = [...input.panel];
+        $ const selectedPanel = panel[state.selectedTabIndex];
 
-            <if(panel.grid && index === state.selectedTabIndex)>
-                <grid cells=panel.grid.cell />
-            </if>
+        <if(selectedPanel.grid)>
+            <grid cells=selectedPanel.grid.cell />
+        </if>
 
-            <if(panel.grouping && index === state.selectedTabIndex)>
+        <if(selectedPanel.grouping)>
+            <for|grouping| of=(selectedPanel.grouping)>
                 <ebay-accordion>
                     <@details>
-                        <@summary>${panel.grouping.title}</@summary>
-                        <grid cells=panel.grouping.grid.cell />
+                        <@summary>${grouping.title}</@summary>
+                        <grid cells=grouping.grid.cell />
                     </@details>
                 </ebay-accordion>
-            </if>
+            </for>
+        </if>
 
-            <if(panel.rowButton && index === state.selectedTabIndex)>
-                <for|rowButton, index| of=panel.rowButton>
-                    <div>
-                        <button on-click("selectRow", index)>
-                            <${rowButton.renderBody}/>
-                        </button>
-                    </div>
-                </for>
-            </if>
-        </for>
+        <if(selectedPanel.rowButton)>
+            <for|rowButton, index| of=selectedPanel.rowButton>
+                <div>
+                    <button on-click("selectRow", index)>
+                        <${rowButton.renderBody}/>
+                    </button>
+                </div>
+            </for>
+        </if>
     </if>
     <else>
         $ const selectedPanel = input.panel[state.selectedTabIndex];
