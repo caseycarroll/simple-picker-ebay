@@ -1,9 +1,8 @@
-import component from './compound-example.marko'
+import component from './attribute-tag-example.marko'
 
 export default {
-    title: "Compound Picker",
+    title: "Attribute Tag Picker",
     component
 }
 
-export const Picker = {
-}
+export const AttributeTagPicker = {}

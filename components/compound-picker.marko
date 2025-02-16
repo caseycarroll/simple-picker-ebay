@@ -21,43 +21,59 @@ class {
     }
 }
 
-<if(input.tab)>
-    <ebay-segmented-buttons on-change("selectTab")>
-        <for|tab, index| of=input.tab>
-            <@button selected=index === state.selectedTabIndex>
-                <${tab.renderBody} />
-            </@button>
-        </for>
-    </ebay-segmented-buttons>
-</if>
+style {
+    .wrapper {
+        max-width: 500px;
+        border: 1px solid black;
+        border-radius: 3px;
+        padding: 8px;
+    }
 
-<for|panel, index| of=input.panel>
-    
-    <if(panel.grouping)>
-        <ebay-accordion>
-            <@details>
-                <@summary>${panel.grouping.title}</@summary>
-                <for|cell| of=panel.grouping.grid.cell>
-                    <ebay-toggle-button 
-                        on-toggle("toggleItem", cell)
-                        pressed=Object.hasOwn(state.selectedItems, cell.selectionId)>
-                        <${cell.renderBody} />
-                    </ebay-toggle-button>
-                </for>
-            </@details>
-        </ebay-accordion>
+    .flow > * + * {
+        margin-inline-start: 16px;
+    }
+}
+
+<div class="wrapper flow">
+    <if(input.tab)>
+        <ebay-segmented-buttons on-change("selectTab")>
+            <for|tab, index| of=input.tab>
+                <@button selected=index === state.selectedTabIndex>
+                    <${tab.renderBody} />
+                </@button>
+            </for>
+        </ebay-segmented-buttons>
     </if>
 
-    <if(panel.grid && index === state.selectedTabIndex)>
-        <for|cell| of=panel.grid.cell>
-            <ebay-toggle-button 
-                on-toggle("toggleItem", cell)
-                pressed=Object.hasOwn(state.selectedItems, cell.selectionId)>
-                <${cell.renderBody} />
-            </ebay-toggle-button>
-        </for>
-    </if>
-</for>
+    <for|panel, index| of=input.panel>
+        
+        <if(panel.grouping && index === state.selectedTabIndex)>
+            <ebay-accordion>
+                <@details>
+                    <@summary>${panel.grouping.title}</@summary>
+                    <for|cell| of=panel.grouping.grid.cell>
+                        <ebay-toggle-button 
+                            on-toggle("toggleItem", cell)
+                            pressed=Object.hasOwn(state.selectedItems, cell.selectionId)>
+                            <${cell.renderBody} />
+                        </ebay-toggle-button>
+                    </for>
+                </@details>
+            </ebay-accordion>
+        </if>
+
+        <if(panel.grid && index === state.selectedTabIndex)>
+            <for|cell| of=panel.grid.cell>
+                <ebay-toggle-button 
+                    on-toggle("toggleItem", cell)
+                    pressed=Object.hasOwn(state.selectedItems, cell.selectionId)>
+                    <${cell.renderBody} />
+                </ebay-toggle-button>
+            </for>
+        </if>
+    </for>
+</div>
+
 
 
 $ const selectedJson = JSON.stringify(state.selectedItems);
