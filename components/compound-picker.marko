@@ -1,22 +1,76 @@
+class {
+    onCreate() {
+        this.state = {
+            selectedTabIndex: 0,
+            selectedItems: {}
+        }
+    }
+
+    selectTab({index}) {
+        this.state.selectedTabIndex = index
+    }
+
+    toggleItem(selectedCell, {pressed}) {
+        const clone = {...this.state.selectedItems};
+        if(pressed) {
+            clone[selectedCell.selectionId] = selectedCell;
+        } else {
+            delete clone[selectedCell.selectionId];
+        }
+        this.state.selectedItems = clone;
+    }
+}
 
 <if(input.tab)>
-    <ebay-segmented-buttons>
-        <for|tab| of=input.tab>
-            <@button>
+    <ebay-segmented-buttons on-change("selectTab")>
+        <for|tab, index| of=input.tab>
+            <@button selected=index === state.selectedTabIndex>
                 <${tab.renderBody} />
             </@button>
         </for>
     </ebay-segmented-buttons>
 </if>
 
-<for|panel| of=input.panel>
-    <if(panel.grid)>
-        <ebay-toggle-button-group>
-            <for|cell| of=panel.grid.cell>
-                <@button>
-                    <${cell.renderBody} />
-                </@button>
-            </for>
-        </ebay-toggle-button-group>
+<for|panel, index| of=input.panel>
+    <if(panel.grid && index === state.selectedTabIndex)>
+        <for|cell| of=panel.grid.cell>
+            <ebay-toggle-button 
+                on-toggle("toggleItem", cell)
+                pressed=Object.hasOwn(state.selectedItems, cell.selectionId)>
+                <${cell.renderBody} />
+            </ebay-toggle-button>
+        </for>
     </if>
 </for>
+
+
+$ const selectedJson = JSON.stringify(state.selectedItems);
+<h2>State Debug</h2>
+<table>
+    <thead>
+        <th>
+            Name
+        </th>
+        <th>
+            Value
+        </th>
+    </thead>
+    <tbody>
+        <tr>
+            <th>
+                selectedAspects:
+            </th>
+            <td>
+                ${selectedJson}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                selectedCategoryIndex:
+            </th>
+            <td>
+                ${state.selectedTabIndex}
+            </td>
+        </tr>
+    </tbody>
+</table>
