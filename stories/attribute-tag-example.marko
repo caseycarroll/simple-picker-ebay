@@ -1,63 +1,162 @@
-<h2>
-    With Tabs
-</h2>
+<h2>With Tabs</h2>
 <compound-picker>
     <@tab>Men</@tab>
     <@tab>Women</@tab>
     <@panel>
         <@grid>
-            <@cell selectionId="men-8">8</@cell>
+            <@cell selectionId="men-8">
+                8
+            </@cell>
         </@grid>
     </@panel>
     <@panel>
         <@grid>
-            <@cell selectionId="women-9">9</@cell>
+            <@cell selectionId="women-9">
+                9
+            </@cell>
         </@grid>
     </@panel>
 </compound-picker>
 
-<h2>
-    No Tabs
-</h2>
+<h2>No Tabs</h2>
 <compound-picker>
     <@panel>
         <@grid>
-            <@cell selectionId="men-8">8</@cell>
+            <@cell selectionId="men-8">
+                8
+            </@cell>
         </@grid>
     </@panel>
 </compound-picker>
 
-<h2>
-    Accordions
-</h2>
+<h2>Accordions</h2>
 <compound-picker>
     <@panel>
         <@grouping title="Standard">
             <@grid>
-                <@cell selectionId="men-8">8</@cell>
+                <@cell selectionId="men-8">
+                    8
+                </@cell>
             </@grid>
         </@grouping>
     </@panel>
 </compound-picker>
 
-<h2>
-    Tabs and Accordions
-</h2>
+<h2>Tabs and Accordions</h2>
 <compound-picker>
     <@tab>Men</@tab>
     <@tab>Women</@tab>
     <@panel>
         <@grouping title="Standard">
             <@grid>
-                <@cell selectionId="men-8">8</@cell>
+                <@cell selectionId="men-8">
+                    8
+                </@cell>
             </@grid>
         </@grouping>
     </@panel>
     <@panel>
         <@grouping title="Standard">
             <@grid>
-                <@cell selectionId="women-9">9</@cell>
+                <@cell selectionId="women-9">
+                    9
+                </@cell>
             </@grid>
         </@grouping>
+    </@panel>
+</compound-picker>
+
+<h2>Navigation</h2>
+
+<compound-picker>
+    <@tab>Men</@tab>
+    <@tab>Women</@tab>
+    <@panel>
+        <@row-button>Men's Pants</@row-button>
+        <@row-button>Men's Shirts</@row-button>
+        <@row title="Men's Pants">
+            <@grid>
+                <@cell selectionId="men-pants-lg">
+                    lg
+                </@cell>
+            </@grid>
+        </@row>
+        <@row title="Men's Shirts">
+            <@grid>
+                <@cell selectionId="men-shirts-md">
+                    md
+                </@cell>
+            </@grid>
+        </@row>
+
+    </@panel>
+    <@panel>
+        <@row-button>Women's Pants</@row-button>
+        <@row-button>Women's Shirts</@row-button>
+        <@row title="Women's Pants">
+            <@grid>
+                <@cell selectionId="women-pants-lg">
+                    lg
+                </@cell>
+            </@grid>
+        </@row>
+        <@row title="Women's Shirts">
+            <@grid>
+                <@cell selectionId="women-shirts-md">
+                    md
+                </@cell>
+            </@grid>
+        </@row>
+    </@panel>
+</compound-picker>
+
+<h2>Navigation with groupings</h2>
+
+<compound-picker>
+    <@tab>Men</@tab>
+    <@tab>Women</@tab>
+    <@panel>
+        <@row-button>Men's Pants</@row-button>
+        <@row-button>Men's Shirts</@row-button>
+        <@row title="Men's Pants">
+            <@grouping title="Standard">
+                <@grid>
+                    <@cell selectionId="men-pants-lg">
+                        lg
+                    </@cell>
+                </@grid>
+            </@grouping>
+        </@row>
+        <@row title="Men's Shirts">
+            <@grouping title="Standard">
+                <@grid>
+                    <@cell selectionId="men-shirts-md">
+                        md
+                    </@cell>
+                </@grid>
+            </@grouping>
+        </@row>
+    </@panel>
+    <@panel>
+        <@row-button>Women's Pants</@row-button>
+        <@row-button>Women's Shirts</@row-button>
+        <@row title="Women's Pants">
+            <@grouping title="Standard">
+                <@grid>
+                    <@cell selectionId="women-pants-lg">
+                        lg
+                    </@cell>
+                </@grid>
+            </@grouping>
+        </@row>
+        <@row title="Women's Shirts">
+            <@grouping title="Standard">
+                <@grid>
+                    <@cell selectionId="women-shirts-md">
+                        md
+                    </@cell>
+                </@grid>
+            </@grouping>
+        </@row>
     </@panel>
 </compound-picker>

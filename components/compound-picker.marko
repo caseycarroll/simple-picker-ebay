@@ -2,7 +2,9 @@ class {
     onCreate() {
         this.state = {
             selectedTabIndex: 0,
-            selectedItems: {}
+            selectedItems: {},
+            navigationLevelIndex: 0,
+            selectedRowIndex: 0
         }
     }
 
@@ -19,6 +21,15 @@ class {
         }
         this.state.selectedItems = clone;
     }
+
+    selectRow(rowIndex) {
+        this.state.navigationLevelIndex++;
+        this.state.selectedRowIndex = rowIndex;
+    }
+
+    navigateBack() {
+        this.state.navigationLevelIndex--;
+    }
 }
 
 style {
@@ -30,11 +41,17 @@ style {
     }
 
     .flow > * + * {
-        margin-inline-start: 16px;
+        margin-block-start: 16px;
+    }
+
+    .cluster {
+        display: flex;
+        gap: 8px;
     }
 }
 
 <div class="wrapper flow">
+<if(state.navigationLevelIndex === 0)>
     <if(input.tab)>
         <ebay-segmented-buttons on-change("selectTab")>
             <for|tab, index| of=input.tab>
@@ -46,6 +63,16 @@ style {
     </if>
 
     <for|panel, index| of=input.panel>
+
+        <if(panel.grid && index === state.selectedTabIndex)>
+            <for|cell| of=panel.grid.cell>
+                <ebay-toggle-button 
+                    on-toggle("toggleItem", cell)
+                    pressed=Object.hasOwn(state.selectedItems, cell.selectionId)>
+                    <${cell.renderBody} />
+                </ebay-toggle-button>
+            </for>
+        </if>
         
         <if(panel.grouping && index === state.selectedTabIndex)>
             <ebay-accordion>
@@ -62,16 +89,57 @@ style {
             </ebay-accordion>
         </if>
 
-        <if(panel.grid && index === state.selectedTabIndex)>
-            <for|cell| of=panel.grid.cell>
-                <ebay-toggle-button 
-                    on-toggle("toggleItem", cell)
-                    pressed=Object.hasOwn(state.selectedItems, cell.selectionId)>
-                    <${cell.renderBody} />
-                </ebay-toggle-button>
+        <if(panel.rowButton && index === state.selectedTabIndex)>
+            <for|rowButton, index| of=panel.rowButton>
+                <div>
+                    <button on-click("selectRow", index)>
+                        <${rowButton.renderBody} />
+                    </button>
+                </div>
             </for>
         </if>
     </for>
+</if>
+<else>
+    $ const selectedPanel = input.panel[state.selectedTabIndex]
+    $ const selectedRow = selectedPanel.row[state.selectedRowIndex]
+
+    <div class="cluster">
+        <button on-click("navigateBack")>
+            Back
+        </button>
+
+        <h3>
+            ${selectedRow.title}
+        </h3>
+    </div>
+
+    <if(selectedRow.grid)>
+        <for|cell| of=selectedRow.grid.cell>
+            <ebay-toggle-button 
+                on-toggle("toggleItem", cell)
+                pressed=Object.hasOwn(state.selectedItems, cell.selectionId)>
+                <${cell.renderBody} />
+            </ebay-toggle-button>
+        </for>
+    </if>
+    
+    <if(selectedRow.grouping)>
+        <ebay-accordion>
+            <@details>
+                <@summary>${selectedRow.grouping.title}</@summary>
+                <for|cell| of=selectedRow.grouping.grid.cell>
+                    <ebay-toggle-button 
+                        on-toggle("toggleItem", cell)
+                        pressed=Object.hasOwn(state.selectedItems, cell.selectionId)>
+                        <${cell.renderBody} />
+                    </ebay-toggle-button>
+                </for>
+            </@details>
+        </ebay-accordion>
+    </if>
+
+</else>
 </div>
 
 
