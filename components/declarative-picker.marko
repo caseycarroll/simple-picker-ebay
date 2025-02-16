@@ -183,9 +183,11 @@ style {
     </else>
 
     <if((!state.showRowContent && !selectedPanel.rowButton) || state.showRowContent)>
-        <ebay-button priority="tertiary" disabled=!state.isResetEnabled on-click("handleReset")>
-            Reset
-        </ebay-button>
+        <div>
+            <ebay-button priority="tertiary" disabled=!state.isResetEnabled on-click("handleReset")>
+                Reset
+            </ebay-button>
+        </div>
     </if>
 </div>
 $ const selectedJson = JSON.stringify(state.selectedItems);
