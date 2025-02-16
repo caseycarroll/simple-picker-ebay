@@ -52,17 +52,19 @@ style {
 
 <macro|{cells}| name="grid">
     $ const iterableCells = [...cells]
-    <for|cell| of=(iterableCells)>
-        <ebay-toggle-button
-            on-toggle("toggleItem", cell)
-            pressed=Object.hasOwn(
-                state.selectedItems,
-                cell.selectionId,
-            )
-        >
-            <${cell.renderBody}/>
-        </ebay-toggle-button>
-    </for>
+    <div>
+        <for|cell| of=(iterableCells)>
+            <ebay-toggle-button
+                on-toggle("toggleItem", cell)
+                pressed=Object.hasOwn(
+                    state.selectedItems,
+                    cell.selectionId,
+                )
+            >
+                <${cell.renderBody}/>
+            </ebay-toggle-button>
+        </for>
+    </div>
 </macro>
 
 <div class="wrapper flow">
