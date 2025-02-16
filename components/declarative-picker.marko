@@ -96,13 +96,20 @@ style {
         $ const panel = [...input.panel];
         $ const selectedPanel = panel[state.selectedTabIndex];
 
+        // TODO: Abstract grid with reset
         <if(selectedPanel.grid)>
             $ const iterableCells = [...selectedPanel.grid.cell]
             $ state.optionsInView = iterableCells.map(({selectionId}) => selectionId);
             $ state.isResetEnabled = Object.keys(state.selectedItems).some(selectedKey => state.optionsInView.includes(selectedKey))
             <grid cells=selectedPanel.grid.cell />
+            
+            <ebay-button priority="tertiary" disabled=!state.isResetEnabled on-click("handleReset")>
+                Reset
+            </ebay-button>
         </if>
 
+        // TODO: Abstract grouping with reset
+        // note: can't re-use grid with reset because state would clash
         <if(selectedPanel.grouping)>
             
             $ let nextVisibleOptions = [];
@@ -123,6 +130,10 @@ style {
         
             $ state.optionsInView = nextVisibleOptions;
             $ state.isResetEnabled = Object.keys(state.selectedItems).some(selectedKey => state.optionsInView.includes(selectedKey))
+            
+            <ebay-button priority="tertiary" disabled=!state.isResetEnabled on-click("handleReset")>
+                Reset
+            </ebay-button>
         </if>
 
         <if(selectedPanel.rowButton)>
@@ -148,13 +159,20 @@ style {
             <h3>${selectedRow.title}</h3>
         </div>
 
+        // TODO: Abstract grid with reset
         <if(selectedRow.grid)>
             $ const iterableCells = [...selectedRow.grid.cell]
             $ state.optionsInView = iterableCells.map(({selectionId}) => selectionId);
             $ state.isResetEnabled = Object.keys(state.selectedItems).some(selectedKey => state.optionsInView.includes(selectedKey))
             <grid cells=selectedRow.grid.cell />
+            
+            <ebay-button priority="tertiary" disabled=!state.isResetEnabled on-click("handleReset")>
+                Reset
+            </ebay-button>
         </if>
 
+        // TODO: Abstract grouping with reset
+        // note: can't re-use grid with reset because state would clash
         <if(selectedRow.grouping)>
             
             $ let nextVisibleOptions = [];
@@ -175,12 +193,12 @@ style {
         
             $ state.optionsInView = nextVisibleOptions;
             $ state.isResetEnabled = Object.keys(state.selectedItems).some(selectedKey => state.optionsInView.includes(selectedKey))
+
+            <ebay-button priority="tertiary" disabled=!state.isResetEnabled on-click("handleReset")>
+                Reset
+            </ebay-button>
         </if>
     </else>
-
-    <ebay-button priority="tertiary" disabled=!state.isResetEnabled on-click("handleReset")>
-        Reset
-    </ebay-button>
 </div>
 $ const selectedJson = JSON.stringify(state.selectedItems);
 <h3>State Debug</h3>
