@@ -11,7 +11,7 @@ class {
             input.selectedAspects.forEach((selectedAspect) => {
                 this.state.selectedAspects = new Map(
                     this.state.selectedAspects.set(
-                        `${selectedAspect.categoryID}-${selectedAspect.title}`,
+                        selectedAspect.id,
                         selectedAspect,
                     ),
                 );
@@ -29,15 +29,12 @@ class {
             this.input.aspects.categories[this.state.selectedCategoryIndex];
         
         selectedCategory.values.forEach((value, index) => {
-            
-            const valueKey = `${selectedCategory.id}-${value.title}`;
-            
             if (pressed.includes(index)) {
                 this.state.selectedAspects = new Map(
-                    this.state.selectedAspects.set(valueKey, value),
+                    this.state.selectedAspects.set(value.id, value),
                 );
             } else {
-                this.state.selectedAspects.delete(valueKey);
+                this.state.selectedAspects.delete(value.id);
                 this.state.selectedAspects = new Map(
                     this.state.selectedAspects,
                 );
@@ -52,8 +49,7 @@ class {
             this.input.aspects.categories[this.state.selectedCategoryIndex];
         
         selectedCategory.values.forEach((value) => {
-            const valueKey = `${selectedCategory.id}-${value.title}`;
-            this.state.selectedAspects.delete(valueKey);
+            this.state.selectedAspects.delete(value.id);
             this.state.selectedAspects = new Map(this.state.selectedAspects);
         });
 
@@ -61,34 +57,77 @@ class {
     }
 }
 
-<ebay-segmented-buttons on-change("selectCategory")>
-    <for|category, categoryIndex| of=(input.aspects.categories)>
-        <@button selected=categoryIndex === state.selectedCategoryIndex>
-            ${category.title}
-        </@button>
-    </for>
-</ebay-segmented-buttons>
+<div class="flow">
+    <ebay-segmented-buttons on-change("selectCategory")>
+        <for|category, categoryIndex| of=(input.aspects.categories)>
+            <@button selected=categoryIndex === state.selectedCategoryIndex>
+                ${category.title}
+            </@button>
+        </for>
+    </ebay-segmented-buttons>
 
-<ebay-toggle-button-group on-change("selectAspect")>
-    <for|value| of=(
-        input.aspects.categories[state.selectedCategoryIndex].values
-    )>
-        <@button
-            key=value.title
-            pressed=state.selectedAspects.has(
-                `${input.aspects.categories[state.selectedCategoryIndex].id}-${value.title}`,
-            )
-        >
-            ${value.title}
-        </@button>
-    </for>
-</ebay-toggle-button-group>
+    <ebay-toggle-button-group on-change("selectAspect")>
+        <for|value| of=(
+            input.aspects.categories[state.selectedCategoryIndex].values
+        )>
+            <@button
+                key=value.title
+                pressed=state.selectedAspects.has(
+                    value.id,
+                )
+            >
+                ${value.title}
+            </@button>
+        </for>
+    </ebay-toggle-button-group>
 
-<ebay-button priority="tertiary" on-click("resetGroup")>
-    Reset
-</ebay-button>
+    <div>
+        <ebay-button priority="tertiary" on-click("resetGroup")>
+            Reset
+        </ebay-button>
+    </div>
+</div>
 
-<hr>
 $ const selectedObj = Object.fromEntries(state.selectedAspects);
 $ const selectedJson = JSON.stringify(selectedObj);
-<p>selectedAspects: ${selectedJson}</p>
+<h2>State Debug</h2>
+<table>
+    <thead>
+        <th>
+            Name
+        </th>
+        <th>
+            Value
+        </th>
+    </thead>
+    <tbody>
+        <tr>
+            <th>
+                selectedAspects:
+            </th>
+            <td>
+                ${selectedJson}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                selectedCategoryIndex:
+            </th>
+            <td>
+                ${state.selectedCategoryIndex}
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+style {
+    .flow > * + * {
+        margin-block-start: 8px;
+    }
+
+    h2 {
+        margin-block-start: 32px;
+    }
+}

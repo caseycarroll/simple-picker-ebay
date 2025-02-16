@@ -1,20 +1,43 @@
-import component from './picker.marko'
-import { fn } from '@storybook/test';
+import component from './picker-host.marko'
 
 export default {
-    title: "Picker",
+    title: "Picker Host",
     component
 }
 
-export const Picker = {
+export const SingleGrid = {
     args: {
-        onChange: fn(),
-        selectedAspects: [
-            {
-                title: "9",
-                id: "mens-9",
-            }
-        ],
+        aspects: {
+            categories: [
+                {
+                    id: "men",
+                    title: "Men",
+                    values: [
+                        {
+                            title: "9",
+                            id: "mens-9"
+                        },
+                        {
+                            title: "10",
+                            id: "mens-10"
+                        },
+                        {
+                            title: "11",
+                            id: "mens-11"
+                        },
+                        {
+                            title: "12",
+                            id: "mens-12"
+                        },
+                    ]
+                },
+            ]
+        }
+    }
+}
+
+export const Tabs = {
+    args: {
         aspects: {
             categories: [
                 {

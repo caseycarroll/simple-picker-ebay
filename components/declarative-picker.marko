@@ -1,0 +1,154 @@
+class {
+    onCreate() {
+        this.state = {
+            selectedTabIndex: 0,
+            selectedItems: {},
+            showRowContent: false,
+            selectedRowIndex: 0,
+        };
+    }
+
+    selectTab({ index }) {
+        this.state.selectedTabIndex = index;
+    }
+
+    toggleItem(selectedCell, { pressed }) {
+        const clone = { ...this.state.selectedItems };
+        if (pressed) {
+            clone[selectedCell.selectionId] = selectedCell;
+        } else {
+            delete clone[selectedCell.selectionId];
+        }
+        this.state.selectedItems = clone;
+    }
+
+    selectRow(rowIndex) {
+        this.state.showRowContent = true;
+        this.state.selectedRowIndex = rowIndex;
+    }
+
+    navigateBack() {
+        this.state.showRowContent = false;
+    }
+}
+
+style {
+    .wrapper {
+        max-width: 500px;
+        border: 1px solid black;
+        border-radius: 3px;
+        padding: 8px;
+    }
+
+    .flow > * + * {
+        margin-block-start: 16px;
+    }
+
+    .cluster {
+        display: flex;
+        gap: 8px;
+    }
+}
+
+<macro|{cells}| name="grid">
+    $ const iterableCells = [...cells]
+    <div>
+        <for|cell| of=(iterableCells)>
+            <ebay-toggle-button
+                on-toggle("toggleItem", cell)
+                pressed=Object.hasOwn(
+                    state.selectedItems,
+                    cell.selectionId,
+                )
+            >
+                <${cell.renderBody}/>
+            </ebay-toggle-button>
+        </for>
+    </div>
+</macro>
+
+<div class="wrapper flow">
+    <if(!state.showRowContent)>
+        <if(input.tab)>
+            <ebay-segmented-buttons on-change("selectTab")>
+                <for|tab, index| of=input.tab>
+                    <@button selected=index === state.selectedTabIndex>
+                        <${tab.renderBody}/>
+                    </@button>
+                </for>
+            </ebay-segmented-buttons>
+        </if>
+
+        $ const panel = [...input.panel];
+        $ const selectedPanel = panel[state.selectedTabIndex];
+
+        <if(selectedPanel.grid)>
+            <grid cells=selectedPanel.grid.cell />
+        </if>
+
+        <if(selectedPanel.grouping)>
+            <for|grouping| of=(selectedPanel.grouping)>
+                <ebay-accordion>
+                    <@details>
+                        <@summary>${grouping.title}</@summary>
+                        <grid cells=grouping.grid.cell />
+                    </@details>
+                </ebay-accordion>
+            </for>
+        </if>
+
+        <if(selectedPanel.rowButton)>
+            <for|rowButton, index| of=selectedPanel.rowButton>
+                <div>
+                    <button on-click("selectRow", index)>
+                        <${rowButton.renderBody}/>
+                    </button>
+                </div>
+            </for>
+        </if>
+    </if>
+    <else>
+        $ const panel = [...input.panel];
+        $ const selectedPanel = panel[state.selectedTabIndex];
+        $ const selectedRow = selectedPanel.row[state.selectedRowIndex];
+
+        <div class="cluster">
+            <button on-click("navigateBack")>
+                Back
+            </button>
+
+            <h3>${selectedRow.title}</h3>
+        </div>
+
+        <if(selectedRow.grid)>
+            <grid cells=selectedRow.grid.cell />
+        </if>
+
+        <if(selectedRow.grouping)>
+            <ebay-accordion>
+                <@details>
+                    <@summary>${selectedRow.grouping.title}</@summary>
+                    <grid cells=selectedRow.grouping.grid.cell />
+                </@details>
+            </ebay-accordion>
+        </if>
+    </else>
+</div>
+$ const selectedJson = JSON.stringify(state.selectedItems);
+<h3>State Debug</h3>
+<table>
+    <thead>
+        <th>Name</th>
+        <th>Value</th>
+    </thead>
+    <tbody>
+        <tr>
+            <th>selectedAspects:</th>
+            <td>${selectedJson}</td>
+        </tr>
+        <tr>
+            <th>selectedCategoryIndex:</th>
+            <td>${state.selectedTabIndex}</td>
+        </tr>
+    </tbody>
+</table>
