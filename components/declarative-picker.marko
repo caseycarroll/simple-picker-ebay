@@ -99,7 +99,7 @@ style {
         <if(selectedPanel.grid)>
             $ const iterableCells = [...selectedPanel.grid.cell]
             $ state.optionsInView = iterableCells.map(({selectionId}) => selectionId);
-            $ state.isResetDisabled = Object.keys(state.selectedItems).some(selectedKey => state.optionsInView.includes(selectedKey))
+            $ state.isResetEnabled = Object.keys(state.selectedItems).some(selectedKey => state.optionsInView.includes(selectedKey))
             <grid cells=selectedPanel.grid.cell />
         </if>
 
@@ -122,7 +122,7 @@ style {
             </for>
         
             $ state.optionsInView = nextVisibleOptions;
-            $ state.isResetDisabled = Object.keys(state.selectedItems).some(selectedKey => state.optionsInView.includes(selectedKey))
+            $ state.isResetEnabled = Object.keys(state.selectedItems).some(selectedKey => state.optionsInView.includes(selectedKey))
         </if>
 
         <if(selectedPanel.rowButton)>
@@ -151,7 +151,7 @@ style {
         <if(selectedRow.grid)>
             $ const iterableCells = [...selectedRow.grid.cell]
             $ state.optionsInView = iterableCells.map(({selectionId}) => selectionId);
-            $ state.isResetDisabled = Object.keys(state.selectedItems).some(selectedKey => state.optionsInView.includes(selectedKey))
+            $ state.isResetEnabled = Object.keys(state.selectedItems).some(selectedKey => state.optionsInView.includes(selectedKey))
             <grid cells=selectedRow.grid.cell />
         </if>
 
@@ -174,11 +174,11 @@ style {
             </for>
         
             $ state.optionsInView = nextVisibleOptions;
-            $ state.isResetDisabled = Object.keys(state.selectedItems).some(selectedKey => state.optionsInView.includes(selectedKey))
+            $ state.isResetEnabled = Object.keys(state.selectedItems).some(selectedKey => state.optionsInView.includes(selectedKey))
         </if>
     </else>
 
-    <ebay-button priority="tertiary" disabled=!state.isResetDisabled on-click("handleReset")>
+    <ebay-button priority="tertiary" disabled=!state.isResetEnabled on-click("handleReset")>
         Reset
     </ebay-button>
 </div>
@@ -203,8 +203,8 @@ $ const selectedJson = JSON.stringify(state.selectedItems);
             <td>${state.optionsInView}</td>
         </tr>
         <tr>
-            <th>isResetDisabled:</th>
-            <td>${state.isResetDisabled}</td>
+            <th>isResetEnabled:</th>
+            <td>${state.isResetEnabled}</td>
         </tr>
     </tbody>
 </table>
