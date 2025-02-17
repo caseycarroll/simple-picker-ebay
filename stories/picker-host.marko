@@ -2,14 +2,14 @@ $ const { aspects } = input
 $ const { categories } = aspects
 
 <declarative-picker>
-    <for|category, index| of=categories>
+    <for|category| of=categories>
         <if(categories.length > 1)>
             <@tab>${category.title}</@tab>
         </if>
         <if(!category.groupings)>
             <@panel>
                 <@grid>
-                    <for|value, index| of=category.values>
+                    <for|value| of=category.values>
                         <@cell selectionId=value.id>
                             ${value.title}
                         </@cell>
@@ -22,7 +22,7 @@ $ const { categories } = aspects
                 <for|grouping| of=category.groupings>
                     <@grouping title=grouping.title>
                         <@grid>
-                            <for|value, index| of=grouping.values>
+                            <for|value| of=grouping.values>
                                 <@cell selectionId=value.id>
                                     ${value.title}
                                 </@cell>
