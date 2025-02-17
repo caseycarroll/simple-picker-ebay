@@ -6,7 +6,6 @@ class {
             showRowContent: false,
             selectedRowIndex: 0,
             optionsInView: [],
-            isResetEnabled: false,
         };
     }
 
@@ -46,26 +45,8 @@ class {
     }
 }
 
-style {
-    .wrapper {
-        max-width: 500px;
-        border: 1px solid black;
-        border-radius: 3px;
-        padding: 8px;
-    }
-
-    .flow > * + * {
-        margin-block-start: 16px;
-    }
-
-    .cluster {
-        display: flex;
-        gap: 8px;
-    }
-}
-
-<macro|{cell}| name="grid">
-    $ const cells = [...cell]
+<macro|input| name="grid">
+    $ const cells = [...input.cell]
     $ const visibleItems = cells.map(({selectionId}) => selectionId)
     $ state.optionsInView = [...state.optionsInView, ...visibleItems];
     <div>
@@ -81,6 +62,18 @@ style {
             </ebay-toggle-button>
         </for>
     </div>
+</macro>
+
+<macro|input| name="grouping">
+    $ const groupings = [...input.grouping];
+    <for|grouping| of=(groupings)>
+        <ebay-accordion>
+            <@details open>
+                <@summary>${grouping.title}</@summary>
+                <grid cell=grouping.grid.cell />
+            </@details>
+        </ebay-accordion>
+    </for>
 </macro>
 
 <div class="wrapper flow">
@@ -99,22 +92,12 @@ style {
             </ebay-segmented-buttons>
         </if>
 
-        // TODO: Abstract grid with reset
         <if(selectedPanel.grid)>
             <grid cell=selectedPanel.grid.cell />
         </if>
 
-        // TODO: Abstract grouping with reset
-        // note: can't re-use grid with reset because state would clash
-        <if(selectedPanel.grouping)>            
-            <for|grouping| of=(selectedPanel.grouping)>
-                <ebay-accordion>
-                    <@details open>
-                        <@summary>${grouping.title}</@summary>
-                        <grid cell=grouping.grid.cell />
-                    </@details>
-                </ebay-accordion>
-            </for>
+        <if(selectedPanel.grouping)>    
+            <grouping grouping=selectedPanel.grouping />        
         </if>
 
         <if(selectedPanel.rowButton)>
@@ -138,34 +121,44 @@ style {
             <h3>${selectedRow.title}</h3>
         </div>
 
-        // TODO: Abstract grid with reset
         <if(selectedRow.grid)>
             <grid cell=selectedRow.grid.cell />
         </if>
 
-        // TODO: Abstract grouping with reset
-        // note: can't re-use grid with reset because state would clash
         <if(selectedRow.grouping)>
-            <for|grouping| of=(selectedRow.grouping)>
-                <ebay-accordion>
-                    <@details open>
-                        <@summary>${grouping.title}</@summary>
-                        <grid cell=grouping.grid.cell />
-                    </@details>
-                </ebay-accordion>
-            </for>
+            <grouping grouping=selectedRow.grouping />
         </if>
     </else>
 
     <if((!state.showRowContent && !selectedPanel.rowButton) || state.showRowContent)>
         <div>
-            $ state.isResetEnabled = Object.keys(state.selectedItems).some(selectedKey => state.optionsInView.includes(selectedKey))
-            <ebay-button priority="tertiary" disabled=!state.isResetEnabled on-click("handleReset")>
+            $ const isResetEnabled = Object.keys(state.selectedItems).some(selectedKey => state.optionsInView.includes(selectedKey))
+            <ebay-button priority="tertiary" disabled=!isResetEnabled on-click("handleReset")>
                 Reset
             </ebay-button>
         </div>
     </if>
 </div>
+
+style {
+    .wrapper {
+        max-width: 500px;
+        border: 1px solid black;
+        border-radius: 3px;
+        padding: 8px;
+    }
+
+    .flow > * + * {
+        margin-block-start: 16px;
+    }
+
+    .cluster {
+        display: flex;
+        gap: 8px;
+    }
+}
+
+// DEBUGGING
 $ const selectedJson = JSON.stringify(state.selectedItems);
 <h3>State Debug</h3>
 <table>
@@ -185,10 +178,6 @@ $ const selectedJson = JSON.stringify(state.selectedItems);
         <tr>
             <th>optionsInView:</th>
             <td>${state.optionsInView}</td>
-        </tr>
-        <tr>
-            <th>isResetEnabled:</th>
-            <td>${state.isResetEnabled}</td>
         </tr>
     </tbody>
 </table>
