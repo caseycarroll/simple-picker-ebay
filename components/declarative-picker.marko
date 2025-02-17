@@ -64,10 +64,12 @@ style {
     }
 }
 
-<macro|{cells}| name="grid">
-    $ const iterableCells = [...cells]
+<macro|{cell}| name="grid">
+    $ const cells = [...cell]
+    $ const visibleItems = cells.map(({selectionId}) => selectionId)
+    $ state.optionsInView = [...state.optionsInView, ...visibleItems];
     <div>
-        <for|cell| of=(iterableCells)>
+        <for|cell| of=(cells)>
             <ebay-toggle-button
                 on-toggle("toggleItem", cell)
                 pressed=Object.hasOwn(
@@ -84,6 +86,7 @@ style {
 <div class="wrapper flow">
     $ const panel = [...input.panel];
     $ const selectedPanel = panel[state.selectedTabIndex];
+    $ state.optionsInView = [];
     
     <if(!state.showRowContent)>
         <if(input.tab)>
@@ -98,34 +101,20 @@ style {
 
         // TODO: Abstract grid with reset
         <if(selectedPanel.grid)>
-            $ const iterableCells = [...selectedPanel.grid.cell]
-            $ state.optionsInView = iterableCells.map(({selectionId}) => selectionId);
-            $ state.isResetEnabled = Object.keys(state.selectedItems).some(selectedKey => state.optionsInView.includes(selectedKey))
-            <grid cells=selectedPanel.grid.cell />
+            <grid cell=selectedPanel.grid.cell />
         </if>
 
         // TODO: Abstract grouping with reset
         // note: can't re-use grid with reset because state would clash
-        <if(selectedPanel.grouping)>
-            
-            $ let nextVisibleOptions = [];
-            
+        <if(selectedPanel.grouping)>            
             <for|grouping| of=(selectedPanel.grouping)>
-                
-                $ const iterableCells = [...grouping.grid.cell]
-                $ let visibleGroup = iterableCells.map(({selectionId}) => selectionId);
-                $ nextVisibleOptions = [...nextVisibleOptions, ...visibleGroup]
-                
                 <ebay-accordion>
                     <@details open>
                         <@summary>${grouping.title}</@summary>
-                        <grid cells=grouping.grid.cell />
+                        <grid cell=grouping.grid.cell />
                     </@details>
                 </ebay-accordion>
             </for>
-        
-            $ state.optionsInView = nextVisibleOptions;
-            $ state.isResetEnabled = Object.keys(state.selectedItems).some(selectedKey => state.optionsInView.includes(selectedKey))
         </if>
 
         <if(selectedPanel.rowButton)>
@@ -151,39 +140,26 @@ style {
 
         // TODO: Abstract grid with reset
         <if(selectedRow.grid)>
-            $ const iterableCells = [...selectedRow.grid.cell]
-            $ state.optionsInView = iterableCells.map(({selectionId}) => selectionId);
-            $ state.isResetEnabled = Object.keys(state.selectedItems).some(selectedKey => state.optionsInView.includes(selectedKey))
-            <grid cells=selectedRow.grid.cell />
+            <grid cell=selectedRow.grid.cell />
         </if>
 
         // TODO: Abstract grouping with reset
         // note: can't re-use grid with reset because state would clash
         <if(selectedRow.grouping)>
-            
-            $ let nextVisibleOptions = [];
-            
             <for|grouping| of=(selectedRow.grouping)>
-                
-                $ const iterableCells = [...grouping.grid.cell]
-                $ let visibleGroup = iterableCells.map(({selectionId}) => selectionId);
-                $ nextVisibleOptions = [...nextVisibleOptions, ...visibleGroup]
-                
                 <ebay-accordion>
                     <@details open>
                         <@summary>${grouping.title}</@summary>
-                        <grid cells=grouping.grid.cell />
+                        <grid cell=grouping.grid.cell />
                     </@details>
                 </ebay-accordion>
             </for>
-        
-            $ state.optionsInView = nextVisibleOptions;
-            $ state.isResetEnabled = Object.keys(state.selectedItems).some(selectedKey => state.optionsInView.includes(selectedKey))
         </if>
     </else>
 
     <if((!state.showRowContent && !selectedPanel.rowButton) || state.showRowContent)>
         <div>
+            $ state.isResetEnabled = Object.keys(state.selectedItems).some(selectedKey => state.optionsInView.includes(selectedKey))
             <ebay-button priority="tertiary" disabled=!state.isResetEnabled on-click("handleReset")>
                 Reset
             </ebay-button>
