@@ -111,7 +111,8 @@ class {
         </if>
     </if>
     <else>
-        $ const selectedRow = selectedPanel.row[state.selectedRowIndex];
+        $ const rows = [...selectedPanel.row];
+        $ const selectedRow = rows[state.selectedRowIndex];
 
         <div class="cluster">
             <button on-click("navigateBack")>

@@ -6,7 +6,7 @@ $ const { categories } = aspects
         <if(categories.length > 1)>
             <@tab>${category.title}</@tab>
         </if>
-        <if(!category.groupings)>
+        <if(!category.groupings && !category.subcategories)>
             <@panel>
                 <@grid>
                     <for|value| of=category.values>
@@ -29,6 +29,37 @@ $ const { categories } = aspects
                             </for>
                         </@grid>
                     </@grouping>
+                </for>
+            </@panel>
+        </if>
+        <if(!category.groupings && category.subcategories)>
+            <@panel>
+                <for|subcategory| of=category.subcategories>
+                    <@row-button>${subcategory.title}</@row-button>
+                    <@row title=subcategory.title>
+                        <if(subcategory.groupings)>
+                            <for|grouping| of=subcategory.groupings>
+                                <@grouping title=grouping.title>
+                                    <@grid>
+                                        <for|value| of=grouping.values>
+                                            <@cell selectionId=value.id>
+                                                ${value.title}
+                                            </@cell>
+                                        </for>
+                                    </@grid>
+                                </@grouping>
+                            </for>
+                        </if>
+                        <if(!subcategory.groupings)>
+                            <@grid>
+                                <for|value| of=subcategory.values>
+                                    <@cell selectionId=value.id>
+                                        ${value.title}
+                                    </@cell>
+                                </for>
+                            </@grid>
+                        </if>
+                    </@row>
                 </for>
             </@panel>
         </if>
