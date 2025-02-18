@@ -6,33 +6,7 @@ $ const { categories } = aspects
         <if(categories.length > 1)>
             <@tab>${category.title}</@tab>
         </if>
-        <if(!category.groupings && !category.subcategories)>
-            <@panel>
-                <@grid>
-                    <for|value| of=category.values>
-                        <@cell selectionId=value.id>
-                            ${value.title}
-                        </@cell>
-                    </for>
-                </@grid>
-            </@panel>
-        </if>
-        <if(category.groupings)>
-            <@panel>
-                <for|grouping| of=category.groupings>
-                    <@grouping title=grouping.title>
-                        <@grid>
-                            <for|value| of=grouping.values>
-                                <@cell selectionId=value.id>
-                                    ${value.title}
-                                </@cell>
-                            </for>
-                        </@grid>
-                    </@grouping>
-                </for>
-            </@panel>
-        </if>
-        <if(!category.groupings && category.subcategories)>
+        <if(category.subcategories)>
             <@panel>
                 <for|subcategory| of=category.subcategories>
                     <@row-button>${subcategory.title}</@row-button>
@@ -63,5 +37,33 @@ $ const { categories } = aspects
                 </for>
             </@panel>
         </if>
+        <else>
+            <if(!category.groupings)>
+                <@panel>
+                    <@grid>
+                        <for|value| of=category.values>
+                            <@cell selectionId=value.id>
+                                ${value.title}
+                            </@cell>
+                        </for>
+                    </@grid>
+                </@panel>
+            </if>
+            <if(category.groupings)>
+                <@panel>
+                    <for|grouping| of=category.groupings>
+                        <@grouping title=grouping.title>
+                            <@grid>
+                                <for|value| of=grouping.values>
+                                    <@cell selectionId=value.id>
+                                        ${value.title}
+                                    </@cell>
+                                </for>
+                            </@grid>
+                        </@grouping>
+                    </for>
+                </@panel>
+            </if>
+        </else>
     </for>
 </declarative-picker>
