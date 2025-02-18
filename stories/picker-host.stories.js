@@ -5,8 +5,11 @@ export default {
     component
 }
 
-export const SingleGrid = {
+export const SingleGridWithInitialSelection = {
     args: {
+        initialSelections: {
+            "mens-9": { title: "9", id: "mens-9"}
+        },
         aspects: {
             categories: [
                 {
