@@ -17,9 +17,6 @@
     "@storybook/marko": "^9.0.2",
     "@storybook/marko-vite": "^2.0.3",
     "@storybook/test": "^8.5.0",
-    "@storybook/web-components": "^8.5.0",
-    "@storybook/web-components-vite": "^8.5.0",
-    "lit": "^3.2.1",
     "storybook": "^8.5.0"
   },
   "dependencies": {
