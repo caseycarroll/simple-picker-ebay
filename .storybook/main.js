@@ -4,7 +4,7 @@ const config = {
     "../stories/**/*.mdx",
     "../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)",
   ],
-  addons: ["@storybook/addon-essentials", "@chromatic-com/storybook"],
+  addons: ["@storybook/addon-essentials"],
   framework: {
     name: "@storybook/marko-vite",
     options: {},
